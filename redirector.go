@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var (
@@ -18,8 +19,10 @@ func init() {
 }
 
 func redirect(w http.ResponseWriter, r *http.Request) {
+	var redirect_url string
+	redirect_url = strings.Replace(URL, "{path}", r.URL.Path, -1)
 	log.Printf("redirecting request from client %s", r.RemoteAddr)
-	http.Redirect(w, r, URL, CODE)
+	http.Redirect(w, r, redirect_url, CODE)
 }
 
 func main() {
