@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	destUrl string
-	code    int
+	destUrl    string
+	code       int
+	listenAddr string
 )
 
 type (
@@ -22,6 +23,7 @@ type (
 func init() {
 	flag.StringVar(&destUrl, "url", "", "URL for redirect")
 	flag.IntVar(&code, "code", 302, "Status code (default: 302)")
+	flag.StringVar(&listenAddr, "listen", ":8080", "listen address")
 	flag.Parse()
 }
 
@@ -52,6 +54,6 @@ func main() {
 
 	http.HandleFunc("/", redirector.Redirect)
 
-	log.Printf("Listening on 8080; redirecting to %s", destUrl)
-	http.ListenAndServe(":8080", nil)
+	log.Printf("Listening on %s; redirecting to %s", listenAddr, destUrl)
+	http.ListenAndServe(listenAddr, nil)
 }
